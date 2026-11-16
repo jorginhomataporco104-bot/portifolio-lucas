@@ -518,15 +518,16 @@ body { letter-spacing: .005em; }
 .portal-video-card:nth-child(2) .portal-video-title h3 { color: #e2e2ff; }
 .portal-video-card video { display: block; width: 100%; max-height: 430px; aspect-ratio: 16 / 9; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: #05080e; object-fit: contain; }
 .portal-scene { position: absolute; z-index: 4; inset: 0; display: grid; overflow: hidden; place-items: center; pointer-events: none; }
-.portal-device { --start-x: 0px; --start-y: 0px; position: relative; width: 112px; height: 210px; transform-style: preserve-3d; animation: portal-phone-flip 4s cubic-bezier(.2,.72,.2,1) forwards; }
-.portal-device-back,.portal-device-front { position: absolute; inset: 0; overflow: hidden; border: 2px solid #c6cfdd; border-radius: 25px; backface-visibility: hidden; box-shadow: inset 0 0 0 3px #171b25, 0 16px 35px rgba(0,0,0,.5); }
-.portal-device-back { background: linear-gradient(145deg,#5b6270,#222936 55%,#111720); }
-.portal-device-front { display: flex; align-items: center; flex-direction: column; padding: 27px 8px 10px; transform: rotateY(180deg); background: linear-gradient(160deg,#171a30,#090e1a 65%,#24182b); }
-.portal-device-side { position: absolute; z-index: 2; top: 38px; right: -2px; width: 3px; height: 38px; border-radius: 3px; background: #d3d7df; transform: translateZ(-2px); }
-.portal-lenses { position: absolute; top: 13px; left: 12px; display: flex; flex-direction: column; gap: 5px; padding: 7px; border: 1px solid #7c8491; border-radius: 17px; background: #333a46; }
-.portal-lenses i { width: 25px; height: 25px; border: 3px solid #9da8b7; border-radius: 50%; background: radial-gradient(circle at 38% 35%,#5b9bb5,#17273e 52%,#070b11 75%); box-shadow: inset 0 0 0 2px #101722; }
-.portal-device-mark { position: absolute; right: 13px; bottom: 25px; color: #d3d8e2; font: 9px var(--mono); letter-spacing: .16em; }
-.portal-selfie-camera { position: absolute; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #080b13; box-shadow: 0 0 0 2px #393b50; }
+.portal-device { --start-x: 0px; --start-y: 0px; position: relative; width: 136px; height: 276px; transform-style: preserve-3d; filter: drop-shadow(0 28px 26px rgba(0,0,0,.5)); animation: portal-phone-flip 4s cubic-bezier(.2,.72,.2,1) forwards; }
+.portal-device-back,.portal-device-front { position: absolute; inset: 0; overflow: hidden; border: 2px solid #aeb7c4; border-radius: 29px; backface-visibility: hidden; box-shadow: inset 0 0 0 2px rgba(255,255,255,.18), inset 0 0 0 5px #171b25, 0 0 0 1px rgba(10,13,19,.8); }
+.portal-device-back::after,.portal-device-front::after { position:absolute; inset:0; border-radius:inherit; background:linear-gradient(112deg,rgba(255,255,255,.24),transparent 24%,transparent 69%,rgba(255,255,255,.08)); content:''; pointer-events:none; }
+.portal-device-back { background: linear-gradient(115deg,#858d99 0%,#515966 9%,#303743 40%,#1b222d 78%,#727a86 100%); }
+.portal-device-front { display: flex; align-items: center; flex-direction: column; margin: 3px; padding: 32px 10px 12px; transform: rotateY(180deg); border: 1px solid #313846; border-radius: 25px; background: linear-gradient(160deg,#202438,#080c15 65%,#1b1724); }
+.portal-device-side { position: absolute; z-index: 2; top: 52px; right: -3px; width: 4px; height: 52px; border: 1px solid #9da5b1; border-radius: 4px; background: linear-gradient(90deg,#59616d,#d7dce4 45%,#717987); transform: translateZ(-2px); box-shadow: 0 59px 0 -1px #8d96a3; }
+.portal-lenses { position: absolute; top: 15px; left: 13px; display: flex; flex-direction: column; gap: 6px; padding: 8px; border: 1px solid #858d98; border-radius: 19px; background: linear-gradient(145deg,#414955,#222833); box-shadow: inset 0 1px 3px #a3aab4, 0 4px 8px rgba(0,0,0,.35); }
+.portal-lenses i { width: 29px; height: 29px; border: 3px solid #aeb6c2; border-radius: 50%; background: radial-gradient(circle at 35% 30%,#9ab8c5 0 5%,#31516b 19%,#111d2b 48%,#05080d 73%); box-shadow: inset 0 0 0 2px #101722, 0 0 4px rgba(130,190,220,.35); }
+.portal-device-mark { position: absolute; right: 16px; bottom: 30px; color: #d3d8e2; font: 9px var(--mono); letter-spacing: .16em; text-shadow: 0 1px 2px #111; }
+.portal-selfie-camera { position: absolute; top: 9px; width: 10px; height: 10px; border: 2px solid #272c39; border-radius: 50%; background: radial-gradient(circle at 35% 30%,#45607f,#080b13 62%); box-shadow: 0 0 0 3px #080a10, 0 0 0 4px rgba(255,255,255,.12); }
 .portal-screen-label { margin-top: auto; color: #f9d59f; font: 8px var(--mono); letter-spacing: .13em; }
 .portal-screen-mini { display: flex; width: 100%; gap: 4px; margin-top: 8px; }
 .portal-screen-mini i { height: 28px; flex: 1; border-radius: 4px; background: linear-gradient(145deg,#eb8c61,#4c3552 62%,#1f3149); }
@@ -544,12 +545,21 @@ body { letter-spacing: .005em; }
 }
 @media(max-width:680px) {
   .video-portal { width: calc(100vw - 16px); height: calc(100dvh - 18px); border-radius: 18px; }
-  .portal-content { gap: 12px; padding: 16px 13px; animation-delay: 4s; }
+  .portal-content { gap: 12px; padding: max(16px, env(safe-area-inset-top)) 13px max(16px, env(safe-area-inset-bottom)); animation-delay: 4s; }
   .portal-toolbar { align-items: flex-start; }
   .portal-close { min-height: 38px; gap: 6px; padding: 7px 10px; font-size: 10px; }
   .portal-video-card { padding: 8px; }
-  .portal-device { width: 94px; height: 176px; }
-  .portal-lenses i { width: 21px; height: 21px; }
+  .portal-device { width: clamp(116px, 36vw, 136px); height: clamp(236px, 73vw, 276px); animation-name: portal-phone-flip-mobile; }
+  .portal-lenses i { width: clamp(24px, 7.5vw, 29px); height: clamp(24px, 7.5vw, 29px); }
+  .portal-device-mark { font-size: 8px; }
+}
+@keyframes portal-phone-flip-mobile {
+  0% { opacity: 0; transform: perspective(760px) translate(var(--start-x),var(--start-y)) rotateY(-18deg) rotateX(8deg) scale(.28); }
+  14% { opacity: 1; transform: perspective(760px) translate(var(--start-x),var(--start-y)) rotateY(0) rotateX(5deg) scale(.78); }
+  36% { opacity: 1; transform: perspective(760px) translate(0,0) rotateY(0) rotateX(0) scale(1); }
+  51% { opacity: 1; transform: perspective(760px) translate(0,0) rotateY(90deg) rotateX(0) scale(1.03); }
+  66%,92% { opacity: 1; transform: perspective(760px) translate(0,0) rotateY(180deg) rotateX(0) scale(1.04); }
+  100% { opacity: 0; transform: perspective(760px) translate(0,0) rotateY(180deg) rotateX(0) scale(1.04); }
 }
 @media(prefers-reduced-motion:reduce) {
   .portal-device { animation: none; opacity: 0; }
