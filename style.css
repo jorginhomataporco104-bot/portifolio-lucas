@@ -163,7 +163,7 @@ button { font: inherit; }
 .project-year { color: #71869a; font: 8px var(--mono); }
 .project-info>p { min-height: 37px; margin: 8px 0 13px; color: #91a2b2; font-size: 10px; line-height: 1.8; }
 .project-info .tags span { font-size: 7px; }
-.work-gallery { border-top: 1px solid rgba(135,172,201,.07); background: linear-gradient(180deg,#0b111b,#0e1726); }
+.work-gallery { scroll-margin-top: 88px; border-top: 1px solid rgba(135,172,201,.07); background: linear-gradient(180deg,#0b111b,#0e1726); }
 .work-gallery .section-index { margin-bottom: 30px; }
 .work-gallery .section-heading { margin-bottom: 32px; }
 .work-video-stage { position: relative; }
@@ -457,6 +457,7 @@ body { letter-spacing: .005em; }
 }
 
 .hero-lead.hero-study { margin-top: 12px; color: #a3afbf; font-size: 13px; line-height: 1.8; }
+.hero-copy .hero-lead { text-align: justify; }
 
 .contact-button {
   padding: 15px 21px;

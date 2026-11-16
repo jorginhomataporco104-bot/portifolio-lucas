@@ -86,7 +86,12 @@ portal.addEventListener('close', () => {
   lockedWorkGallery.querySelector('.work-video-grid').removeAttribute('inert');
   lockedWorkGallery.querySelector('.work-video-grid').setAttribute('aria-hidden', 'false');
   lockedWorkGallery.querySelector('.work-video-lock').hidden = true;
-  portalTrigger.focus();
+  const portfolioTitle = lockedWorkGallery.querySelector('#portfolio-title');
+  portfolioTitle.focus({ preventScroll: true });
+  lockedWorkGallery.scrollIntoView({
+    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    block: 'start'
+  });
 });
 
 const chatLauncher = document.querySelector('.chat-launcher');
