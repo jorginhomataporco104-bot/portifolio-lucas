@@ -75,23 +75,49 @@ portalClose.addEventListener('click', () => portal.close());
 portal.addEventListener('click', (event) => {
   if (event.target === portal) portal.close();
 });
+
+function waitForPageScroll() {
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(fallback);
+      window.removeEventListener('scrollend', finish);
+      resolve();
+    };
+    const fallback = window.setTimeout(finish, 1800);
+    window.addEventListener('scrollend', finish, { once: true });
+  });
+}
+
 portal.addEventListener('close', () => {
   window.clearTimeout(portalPlaybackTimer);
   portalVideos.forEach((video) => {
     video.pause();
     video.currentTime = 0;
   });
-  lockedWorkGallery.classList.remove('is-locked');
-  lockedWorkGallery.classList.add('is-unlocked');
-  lockedWorkGallery.querySelector('.work-video-grid').removeAttribute('inert');
-  lockedWorkGallery.querySelector('.work-video-grid').setAttribute('aria-hidden', 'false');
-  lockedWorkGallery.querySelector('.work-video-lock').hidden = true;
+  const wasLocked = lockedWorkGallery.classList.contains('is-locked');
+  if (wasLocked) {
+    lockedWorkGallery.classList.remove('is-locked');
+    lockedWorkGallery.classList.add('is-unlocked');
+    lockedWorkGallery.querySelector('.work-video-grid').removeAttribute('inert');
+    lockedWorkGallery.querySelector('.work-video-grid').setAttribute('aria-hidden', 'false');
+    lockedWorkGallery.querySelector('.work-video-lock').hidden = true;
+  }
   const portfolioTitle = lockedWorkGallery.querySelector('#portfolio-title');
   portfolioTitle.focus({ preventScroll: true });
+  const scrollFinished = waitForPageScroll();
   lockedWorkGallery.scrollIntoView({
     behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     block: 'start'
   });
+  if (wasLocked && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    scrollFinished.then(() => {
+      requestAnimationFrame(() => lockedWorkGallery.classList.add('show-lock-break'));
+      window.setTimeout(() => lockedWorkGallery.classList.remove('show-lock-break'), 2800);
+    });
+  }
 });
 
 const chatLauncher = document.querySelector('.chat-launcher');
