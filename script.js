@@ -31,6 +31,7 @@ const portalClose = document.querySelector('.portal-close');
 const portalDevice = document.querySelector('.portal-device');
 const portalScene = document.querySelector('.portal-scene');
 const portalVideos = [...portal.querySelectorAll('video')];
+const lockedWorkGallery = document.querySelector('.work-gallery');
 let portalPlaybackTimer;
 
 function playPortalVideo(index) {
@@ -80,6 +81,11 @@ portal.addEventListener('close', () => {
     video.pause();
     video.currentTime = 0;
   });
+  lockedWorkGallery.classList.remove('is-locked');
+  lockedWorkGallery.classList.add('is-unlocked');
+  lockedWorkGallery.querySelector('.work-video-grid').removeAttribute('inert');
+  lockedWorkGallery.querySelector('.work-video-grid').setAttribute('aria-hidden', 'false');
+  lockedWorkGallery.querySelector('.work-video-lock').hidden = true;
   portalTrigger.focus();
 });
 
