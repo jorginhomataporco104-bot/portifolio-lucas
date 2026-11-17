@@ -88,8 +88,13 @@ function openVideoPortal(event) {
   portalScene.style.setProperty('--start-x', `${startX}px`);
   portalScene.style.setProperty('--start-y', `${startY}px`);
   portal.showModal();
+  const firstVideo = portalVideos[0];
+  firstVideo.muted = true;
+  playPortalVideo(0);
   const startDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 4000;
-  portalPlaybackTimer = window.setTimeout(() => playPortalVideo(0), startDelay);
+  portalPlaybackTimer = window.setTimeout(() => {
+    if (portal.open && !firstVideo.paused) firstVideo.muted = false;
+  }, startDelay);
 }
 
 portalTrigger.addEventListener('click', openVideoPortal);
