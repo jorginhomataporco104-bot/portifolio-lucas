@@ -31,24 +31,48 @@ const portalClose = document.querySelector('.portal-close');
 const portalDevice = document.querySelector('.portal-device');
 const portalScene = document.querySelector('.portal-scene');
 const portalVideos = [...portal.querySelectorAll('video')];
+const portalGallery = portal.querySelector('.portal-gallery');
 const lockedWorkGallery = document.querySelector('.work-gallery');
+let portalScrollIntent = false;
 let portalPlaybackTimer;
+
+portalGallery.addEventListener('wheel', () => { portalScrollIntent = true; }, { passive: true });
+portalGallery.addEventListener('touchmove', () => { portalScrollIntent = true; }, { passive: true });
+portalGallery.addEventListener('keydown', (event) => {
+  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
+    portalScrollIntent = true;
+  }
+});
 
 function playPortalVideo(index) {
   const video = portalVideos[index];
   if (!video || !portal.open) return;
-
-  portalVideos.forEach((item) => {
-    if (item !== video) item.pause();
+  portalVideos.forEach((otherVideo) => {
+    if (otherVideo !== video) otherVideo.pause();
   });
-  video.muted = true;
   video.play().catch(() => {});
 }
 
-portalVideos.forEach((video, index) => {
-  video.addEventListener('ended', () => {
-    if (index < portalVideos.length - 1) playPortalVideo(index + 1);
+document.querySelectorAll('video').forEach((video) => {
+  video.addEventListener('play', () => {
+    document.querySelectorAll('video').forEach((otherVideo) => {
+      if (otherVideo !== video) otherVideo.pause();
+    });
   });
+});
+
+const portalVideoObserver = new IntersectionObserver((entries) => {
+  const visibleVideo = entries
+    .filter((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.5)
+    .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0]?.target;
+
+  if (visibleVideo && portal.open && portalScrollIntent && visibleVideo.paused) {
+    visibleVideo.play().catch(() => {});
+  }
+}, { root: portalGallery, threshold: [0, 0.5, 0.75] });
+
+portalVideos.forEach((video) => {
+  portalVideoObserver.observe(video);
 });
 
 function openVideoPortal(event) {
@@ -64,7 +88,6 @@ function openVideoPortal(event) {
   portalScene.style.setProperty('--start-x', `${startX}px`);
   portalScene.style.setProperty('--start-y', `${startY}px`);
   portal.showModal();
-
   const startDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 4000;
   portalPlaybackTimer = window.setTimeout(() => playPortalVideo(0), startDelay);
 }
@@ -93,6 +116,7 @@ function waitForPageScroll() {
 
 portal.addEventListener('close', () => {
   window.clearTimeout(portalPlaybackTimer);
+  portalScrollIntent = false;
   portalVideos.forEach((video) => {
     video.pause();
     video.currentTime = 0;
@@ -245,7 +269,30 @@ chatClose.addEventListener('click', () => setChatOpen(false));
 document.querySelectorAll('[data-chat-question]').forEach((button) => {
   button.addEventListener('click', () => {
     const question = button.dataset.chatQuestion;
+    const action = button.dataset.chatAction;
     addChatMessage(question, 'user');
+
+    if (action === 'portfolio') {
+      setChatEmotion('🤩');
+      addChatMessage('Vou abrir o portfólio para você. ✨', 'bot');
+      window.setTimeout(sendMascotToPortfolio, 650);
+      return;
+    }
+
+    if (action === 'whatsapp') {
+      setChatEmotion('😊');
+      addChatMessage('Vou abrir o WhatsApp para você pedir seu orçamento.', 'bot');
+      window.open('https://wa.me/5538997370207?text=Ol%C3%A1%21%20Quero%20conversar%20sobre%20um%20projeto%20de%20v%C3%ADdeo.', '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    if (action === 'services') {
+      setChatEmotion('😎');
+      const message = addChatMessage('O Lucas é videomaker e editor de vídeos para redes sociais. Ele cria conteúdos criativos e cuida da edição.', 'bot');
+      addChatLink(message, 'Ver trabalhos no portfólio', '#portfolio');
+      return;
+    }
+
     replyToChat(question);
   });
 });
